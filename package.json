@@ -1,0 +1,6 @@
+{
+  "name": "com.sandersaveli.singletones",
+  "version": "1.0.0",
+  "displayName": "Singletones",
+  "description": "Provides two abstract classes for creating a Singleton and a DoNotDesrtroyOnLoad Singleton."
+}
