@@ -1,18 +1,44 @@
 using UnityEngine;
 
-public class Singletone<T> : MonoBehaviour where T : Component
+namespace Singletones 
 {
-    private static T _instance;
+    public abstract class Singletone<T> : MonoBehaviour where T : Component
+    {
+        private static T _instance;
 
-    public static T instance {
-        get
+        public static T instance
         {
+            get
+            {
+                if (_instance == null)
+                {
+                    GameObject gameObject = new GameObject('[' + typeof(T).Name + ']');
+                    _instance = gameObject.AddComponent<T>();
+                }
+                return _instance;
+            }
+        }
+
+        public virtual void Awake()
+        {
+            if (_instance != null && _instance != this)
+            {
+                Debug.LogWarning($"Singletone of type {typeof(T)} already available!");
+                Destroy(gameObject);
+            }
             if (_instance == null)
             {
-                GameObject gameObject = new GameObject('[' + typeof(T).Name + ']');
-                _instance = gameObject.AddComponent<T>();
+                _instance = gameObject.GetComponent<T>();
             }
-            return _instance;
+        }
+
+        public virtual void OnDestroy()
+        {
+            if (_instance == this)
+            {
+                _instance = null;
+            }
         }
     }
+
 }
